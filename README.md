@@ -1,2 +1,2 @@
-# USD_tests_for_pumpkin
-usd tests for pumpkin project
+# Pumpkin Pipeline
+tests for pumpkin project
