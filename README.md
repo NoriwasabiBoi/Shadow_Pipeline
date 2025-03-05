@@ -1,2 +1,2 @@
-# Pumpkin Pipeline
-tests for pumpkin project
+# Shadow Pipeline
+small snippets for shadow university projects
