@@ -1,2 +1,2 @@
 # Shadow Pipeline
-small snippets for shadow university projects
+small snippets for shadow university project
