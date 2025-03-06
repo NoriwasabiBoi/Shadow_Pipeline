@@ -4,7 +4,7 @@ from pxr import Usd, UsdGeom
 # Set your export directory path here
 export_dir = "%EXPORT_PATH"
 
-# Get all camera nodes under /obj (adjust the path as needed)
+# Get all cameras
 root = hou.node('/')
 camera_nodes = root.recursiveGlob('SHOT_\d\d\d_\d\d\d', hou.nodeTypeFilter.ObjCamera)
 
@@ -12,7 +12,7 @@ for cam in camera_nodes:
     # Build a filename based on the camera's name
     usd_filename = "{}{}.usd".format(export_dir, cam.name())
     
-    # Create a new USD stage (i.e. a new file)
+    # Create a new USD stage
     stage = Usd.Stage.CreateNew(usd_filename)
     
     # Create a USD camera prim at the default path '/Camera'
@@ -24,7 +24,6 @@ for cam in camera_nodes:
         usd_cam.GetFocalLengthAttr().Set(focal_length)
     
     # Optionally, set other camera attributes like aperture, clipping ranges, etc.
-    # For example:
     if cam.parm("aperture"):
         aperture = cam.parm("aperture").eval()
         usd_cam.GetHorizontalApertureAttr().Set(aperture)
