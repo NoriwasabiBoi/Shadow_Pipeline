@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Please note, that the files that define the main menu (ie,
+     MainMenuCommon, MainMenuMaster, and MainMenuEscape)
+     can exist in $HOME/houdiniX.Y/ directory and will supplement 
+     the original definitions found in $HFS/houdini/ 
+     The XML elements shown in this example file should be included in
+     one of the official file names (eg, MainMenuCommon) for them to take 
+     effect in Houdini. 
+-->
+
+<!-- Please see menu.xsd for the menu validation schema. -->
+
+<mainMenu>
+  <menuBar>
+
+    <!-- An example of how to add own python scripts submenu to the main menu.
+
+          Note, that the 'id' attribute is optional, and if not specified, 
+          it will be automaticaly generated and assigned internally. The 'id'
+          has some significace for action and toggle items, where it corresponds
+          to the hotkey for that item. However, if no hotkey needs to be
+          assigned in the hotkey customization file, the id may be omitted for
+          these items too.
+    -->
+
+  <!-- Needed for addScriptItem below -->
+    <subMenu id="tools_menu">
+        <label>Rauchertofu</label>
+        <separatorItem id="some_menu_item"/>
+    </subMenu>
+
+  </menuBar>
+
+
+
+
+  <!-- An example of how to add a new menu item that will invoke a python script
+       from a file. This method of adding a menu item does not require repeating
+       the entire menu structure that defines the item's parenting. The
+       script_file.py will be passed the argument string "-q -n extra_name"
+       which will be available in the script as standard command line arguments:
+       sys.argv[0] = (...)/script_file.py
+       sys.argv[1] = '-q'
+       sys.argv[2] = '-n'
+       sys.argv[3] = 'extra_name'
+  -->
+
+  <addScriptItem id="h.my_added_script">
+        <label>Make Flipbook</label>
+        <parent>tools_menu</parent>
+        <insertBefore>some_menu_item</insertBefore>
+
+        <scriptPath>C:\Users\rl049\PycharmProjects\Shadow_Pipeline\houdini\python\flipbook.py</scriptPath>
+        <scriptArgs>-q -n extra_name</scriptArgs>
+  </addScriptItem>
+
+  <!-- The menu item can be inserted at a desired position using the following
+       tags:
+       <insertBefore/>                  - insert at the beginning of the submenu
+       <insertBefore>id</insertBefore>  - insert before an item given by the id
+       <insertAfter/>                   - append at the end of the submenu
+       <insertAfter>id</insertAfter>    - insert after an item given by the id
+       <insertAtIndex>2</insertAtIndex> - insert at a given numerical index
+  -->
+
+</mainMenu>
