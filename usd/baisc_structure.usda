@@ -1,0 +1,20 @@
+#usda 1.0
+
+def Xform "geo" {
+    def Xform "render" {
+        def Mesh "render" (
+            // optional mesh attributes
+        )
+        {
+            // mesh data, points, etc.
+        }
+    }
+    def Xform "proxy" {
+        def Mesh "proxy" {
+            // optional mesh attributes
+        }
+        {
+            // mesh data, points, etc.
+        }
+    }
+}
