@@ -19,8 +19,9 @@ def create_render_layer(stage, asset_name):
     render = UsdGeom.Xform.Define(stage, f'/{asset_name}/render')
     return render.GetPath()
 
-def get_normals():
-    normals = []
+def get_normals(obj):
+    """ Get face normals and convert them to tuples. """
+    normals = [(poly.normal.x, poly.normal.y, poly.normal.z) for poly in obj.data.polygons]
     return normals
 
 def get_geometry_data(usdgeom):
@@ -42,7 +43,7 @@ def get_geometry_data(usdgeom):
     # Get face vertex indices
     face_vertex_indices = [vert_idx for poly in mesh.polygons for vert_idx in poly.vertices]
 
-    get_normals()
+    normals_array = get_normals(obj)
 
     # Set USD attributes using Vt arrays
     usdgeom.GetPointsAttr().Set(Vt.Vec3fArray(points_array))
@@ -50,14 +51,14 @@ def get_geometry_data(usdgeom):
     usdgeom.GetFaceVertexIndicesAttr().Set(Vt.IntArray(face_vertex_indices))
 
     # Set normals (face-varying) and specify the interpolation
-    usdgeom.CreateNormalsAttr().Set(Vt.Vec3fArray(normals_array))
+    usdgeom.GetNormalsAttr().Set(Vt.Vec3fArray(normals_array))
     usdgeom.SetNormalsInterpolation("faceVarying")  # Change to "vertex" if needed
 
     # Set subdivision scheme (set to "none" to disable smoothing, or "catmullClark" if desired)
     usdgeom.CreateSubdivisionSchemeAttr().Set("none")
 
 
-stage = write_usd_file("C:/Users/rlemke/Desktop/test_01.usda", "capybara")
+stage = write_usd_file("/Users/robin/Desktop/test_05.usda", "capybara")
 create_proxy_layer(stage, "capybara")
 create_render_layer(stage, "capybara")
 stage.GetRootLayer().Save()
