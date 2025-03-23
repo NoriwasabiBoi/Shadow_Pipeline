@@ -10,7 +10,7 @@ def write_usd_file(filepath, asset_name):
 
 def create_proxy_layer(stage, asset_name):
     proxy = UsdGeom.Xform.Define(stage, f'/{asset_name}/proxy')
-    proxy_geo = UsdGeom.Mesh.Define(stage, proxy.GetPath())
+    proxy_geo = UsdGeom.Mesh.Define(stage, str(proxy.GetPath())+"/proxy")
     get_geometry_data(proxy_geo)
     return proxy.GetPath()
 
@@ -52,13 +52,13 @@ def get_geometry_data(usdgeom):
 
     # Set normals (face-varying) and specify the interpolation
     usdgeom.GetNormalsAttr().Set(Vt.Vec3fArray(normals_array))
-    usdgeom.SetNormalsInterpolation("faceVarying")  # Change to "vertex" if needed
+    usdgeom.SetNormalsInterpolation("uniform")  # Change to "vertex" if needed
 
     # Set subdivision scheme (set to "none" to disable smoothing, or "catmullClark" if desired)
     usdgeom.CreateSubdivisionSchemeAttr().Set("none")
 
 
-stage = write_usd_file("/Users/robin/Desktop/test_05.usda", "capybara")
+stage = write_usd_file("/Users/robin/Desktop/test_09.usda", "capybara")
 create_proxy_layer(stage, "capybara")
 create_render_layer(stage, "capybara")
 stage.GetRootLayer().Save()
