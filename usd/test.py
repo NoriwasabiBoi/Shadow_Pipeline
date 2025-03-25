@@ -5,6 +5,7 @@ from pxr import Usd, UsdGeom, Vt, Gf
 def write_usd_file(filepath, asset_name):
     stage = Usd.Stage.CreateNew(filepath)
     stage.SetDefaultPrim({asset_name})
+    UsdGeom.SetStageUpAxis(stage, UsdGeom.Tokens.y)
     xformPrim = UsdGeom.Xform.Define(stage, f'/{asset_name}')
     return stage
 
