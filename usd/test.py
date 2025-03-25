@@ -20,6 +20,14 @@ def create_render_layer(stage, asset_name):
     render = UsdGeom.Xform.Define(stage, f'/{asset_name}/render')
     return render.GetPath()
 
+def reference_file():
+    refStage = Usd.Stage.CreateNew('RefExample.usda')
+    refSphere = refStage.OverridePrim('/refSphere')
+    print(refStage.GetRootLayer().ExportToString())
+    refSphere.GetReferences().AddReference('./HelloWorld.usda')
+    print(refStage.GetRootLayer().ExportToString())
+    refStage.GetRootLayer().Save()
+
 def get_normals(obj):
     """ Get face normals and convert them to tuples. """
     normals = [(poly.normal.x, poly.normal.y, poly.normal.z) for poly in obj.data.polygons]
