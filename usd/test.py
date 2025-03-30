@@ -3,22 +3,24 @@ from pxr import Usd, UsdGeom, Vt, Gf
 
 
 def write_usd_file(filepath, asset_name):
+    unit = 1
     stage = Usd.Stage.CreateNew(filepath)
     stage.SetDefaultPrim({asset_name})
     UsdGeom.SetStageUpAxis(stage, UsdGeom.Tokens.y)
+    UsdGeom.SetStageMetersPerUnit(stage, unit)
     xformPrim = UsdGeom.Xform.Define(stage, f'/{asset_name}')
-    return stage
+    return stage, xformPrim
 
 
 def create_proxy_layer(stage, asset_name):
-    proxy = UsdGeom.Xform.Define(stage, f'/{asset_name}/proxy')
+    proxy = UsdGeom.Xform.Define(stage, f'/{asset_name}/geo/proxy')
     proxy_geo = UsdGeom.Mesh.Define(stage, str(proxy.GetPath())+"/proxy")
     get_geometry_data(proxy_geo)
     return proxy.GetPath()
 
 
 def create_render_layer(stage, asset_name):
-    render = UsdGeom.Xform.Define(stage, f'/{asset_name}/render')
+    render = UsdGeom.Xform.Define(stage, f'/{asset_name}/geo/render')
     return render.GetPath()
 
 def reference_file():
