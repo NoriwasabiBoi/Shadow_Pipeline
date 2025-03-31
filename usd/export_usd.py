@@ -27,10 +27,12 @@ def setup_hierarchy(stage: Usd.Stage,asset_name: str, type: str):
     :param asset_name:
     :return:
     '''
-    geo = UsdGeom.Xform.Define(stage, f'/{asset_name}+/geo/')
-    xform = UsdGeom.Xform.Define(stage, str(geo.GetPath()) + f'/{type}')
-    mesh = UsdGeom.Mesh.Define(stage, str(xform.GetPath()) + f'/{type}')
-    return mesh
+    geo = UsdGeom.Xform.Define(stage, f'/{asset_name}+/geometry/')
+    shd = UsdGeom.Xform.Define(stage, f'/{asset_name}+/shading')
+    tex = UsdGeom.Xform.Define(stage, f'/{asset_name}+/texturing')
+    # anim = UsdGeom.Xform.Define(stage, f'/{asset_name}+/animation')
+    for type in ['proxy', 'geometry']:
+        xform = UsdGeom.Xform.Define(stage, str(geo.GetPath()) + f'/{type}')
 
 def set_mesh_attr(mesh_data: dict[], mesh: UsdGeom):
     mesh.GetPointsAttr().Set(Vt.Vec3fArray(mesh_data['points']))
@@ -43,3 +45,23 @@ def set_mesh_attr(mesh_data: dict[], mesh: UsdGeom):
 def write_usd(stage: Usd.Stage, asset_name: str, filepath: str):
     setup_stage(filepath=filepath, asset_name=asset_name)
     stage.GetRootLayer().Save()
+
+
+import os
+
+
+def create_asset_usd(folder):
+    for prop in os.listdir(folder):
+        print(prop)
+        prop = prop+".usda"
+        path = os.path.join(folder, prop)
+        print(path)
+
+        # Check if the USD file already exists at the path
+        if not os.path.exists(path):
+            # Create the USD file by setting up the stage
+            stage, asset_prim = setup_stage(path, prop)
+            # Continue with the hierarchy setup
+            setup_hierarchy(stage, asset_prim)
+        else:
+            print("USD file already exists at:", path)
