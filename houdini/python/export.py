@@ -117,6 +117,6 @@ def export_usd(filepath, option):
 
 
 # Usage remains exactly the same:
-file = "C:/Users/rl049/Desktop/"
+file = "PATH"
 option = "render"
 export_usd(file, option)
